@@ -1,53 +1,111 @@
-<form (submit)="addMeal($event)">
-    <label for="mealName">Nom du repas</label>
-    <input type="text" id="mealName" [formField]="mealForm.name" />
+<main class="meals-page">
+    <section class="page-intro" aria-labelledby="page-title">
+        <h1 id="page-title">Mes repas</h1>
+    </section>
 
-    <label for="mealIngredients">Ingrédients du repas</label>
-    <input type="text" id="mealIngredients" [formField]="mealForm.ingredients" />
-
-    <label for="mealRecipe">Recette du repas</label>
-    <input type="text" id="mealRecipe" [formField]="mealForm.recipe" />
-
-    <select id="mealType" [formField]="mealForm.type">
-        <option id="starter">Entrée</option>
-        <option id="main">Repas principal</option>
-        <option id="dessert">Dessert</option>
-    </select>
-
-    <label for="mealPreparationTime">Temps de préparation</label>
-    <input type="number" id="mealPreparationTime" [formField]="mealForm.preparation" />
-
-    <label for="mealCookingTime">Temps de cuisson</label>
-    <input type="number" id="mealCookingTime" [formField]="mealForm.cooking" />
-
-    <button type="submit" [disabled]="isSaving()">
-        {{ isSaving() ? 'Enregistrement…' : 'Ajouter' }}
-    </button>
-
-    @if (saveError()) {
-    <p role="alert">{{ saveError() }}</p>
-    }
-</form>
-
-@if (loadError()) {
-<p role="alert">{{ loadError() }}</p>
-}
-
-@if (isLoading()) {
-<p>Chargement des repas…</p>
-} @else {
-<div class="meal-container">
-    @for (meal of meals(); track $index) {
-    <div class="meal-item">
-        <div class="meal-item__first_row">
-            <div class="meal-name">{{ meal.name | titlecase }}</div>
-            <div class="meal-type">{{ meal.type }}</div>
+    <section class="form-panel" aria-labelledby="form-title">
+        <div class="section-heading">
+            <div>
+                <h2 id="form-title">Un nouveau repas</h2>
+            </div>
+            <span class="form-panel__icon" aria-hidden="true">＋</span>
         </div>
-        <div class="meal-ingredients">{{ meal.ingredients }}</div>
-        <div class="meal-recipe">{{ meal.recipe }}</div>
-        <div class="meal-preparation">{{ meal.preparation }} min de préparation</div>
-        <div class="meal-cooking">{{ meal.cooking }} min de cuisson</div>
-    </div>
-    }
-</div>
-}
+
+        <form class="meal-form" (submit)="addMeal($event)">
+            <div class="form-field">
+                <label for="mealName">Nom du repas</label>
+                <input type="text" id="mealName" placeholder="Ex. Gratin de légumes" [formField]="mealForm.name" />
+            </div>
+
+            <div class="form-field">
+                <label for="mealType">Catégorie</label>
+                <select id="mealType" [formField]="mealForm.type">
+                    <option value="" disabled>Choisir une catégorie</option>
+                    <option id="starter">Entrée</option>
+                    <option id="main">Repas principal</option>
+                    <option id="dessert">Dessert</option>
+                </select>
+            </div>
+
+            <div class="form-field form-field--wide">
+                <label for="mealIngredients">Ingrédients</label>
+                <input type="text" id="mealIngredients" placeholder="Ex. courgettes, crème, fromage…" [formField]="mealForm.ingredients" />
+            </div>
+
+            <div class="form-field form-field--wide">
+                <label for="mealRecipe">Recette</label>
+                <input type="text" id="mealRecipe" placeholder="Quelques mots sur la préparation" [formField]="mealForm.recipe" />
+            </div>
+
+            <div class="form-field">
+                <label for="mealPreparationTime">Préparation <span>(min)</span></label>
+                <input type="number" id="mealPreparationTime" placeholder="20" [formField]="mealForm.preparation" />
+            </div>
+
+            <div class="form-field">
+                <label for="mealCookingTime">Cuisson <span>(min)</span></label>
+                <input type="number" id="mealCookingTime" placeholder="30" [formField]="mealForm.cooking" />
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" [disabled]="isSaving()">
+                    {{ isSaving() ? 'Enregistrement…' : 'Ajouter le repas' }}
+                    @if (!isSaving()) {
+                    <span aria-hidden="true">→</span>
+                    }
+                </button>
+            </div>
+
+            @if (saveError()) {
+            <p class="form-error" role="alert">{{ saveError() }}</p>
+            }
+        </form>
+    </section>
+
+    <section class="meal-section" aria-labelledby="meals-title">
+        <div class="section-heading meal-section__heading">
+            @if (!isLoading() && meals().length > 0) {
+            <span class="meal-count">{{ meals().length }} repas</span>
+            }
+        </div>
+
+        @if (loadError()) {
+        <p class="status-message status-message--error" role="alert">{{ loadError() }}</p>
+        }
+
+        @if (isLoading()) {
+        <p class="status-message" role="status">Chargement de vos repas…</p>
+        } @else if (meals().length === 0 && !loadError()) {
+        <div class="empty-state">
+            <span class="empty-state__icon" aria-hidden="true">✳</span>
+            <h3>Votre carnet est encore vide</h3>
+            <p>Ajoutez votre premier repas pour commencer votre collection.</p>
+        </div>
+        } @else {
+        <div class="meal-container">
+            @for (meal of meals(); track meal.id) {
+            <article class="meal-card">
+                <div class="meal-card__top">
+                    <h3 class="meal-name">{{ meal.name | titlecase }}</h3>
+                    <span class="meal-type">{{ meal.type }}</span>
+                </div>
+                <div class="meal-card__content">
+                    <div class="meal-detail">
+                        <span class="meal-detail__label">Ingrédients</span>
+                        <p class="meal-ingredients">{{ meal.ingredients || 'Non renseignés' }}</p>
+                    </div>
+                    <div class="meal-detail">
+                        <span class="meal-detail__label">Recette</span>
+                        <p class="meal-recipe">{{ meal.recipe || 'Non renseignée' }}</p>
+                    </div>
+                </div>
+                <div class="meal-card__times">
+                    <span class="meal-time"><span aria-hidden="true">◷</span> Préparation <strong>{{ meal.preparation }} min</strong></span>
+                    <span class="meal-time"><span aria-hidden="true">♨</span> Cuisson <strong>{{ meal.cooking }} min</strong></span>
+                </div>
+            </article>
+            }
+        </div>
+        }
+    </section>
+</main>

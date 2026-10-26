@@ -1,119 +1,105 @@
 :host {
 	display: block;
+	padding: 18px 32px 0;
 }
 
 .site-header {
-	margin: 10px 50px;
-	border-radius: 20px;
-	border: 3px solid #A1232D;
-	background: #E09292;
+	max-width: 1280px;
+	margin: 0 auto;
+	border: 1px solid var(--color-border);
+	border-radius: 16px;
+	background: rgb(255 255 255 / 88%);
+	box-shadow: 0 5px 20px rgb(58 31 35 / 4%);
 }
 
 .header-inner {
-	position: relative;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	max-width: 1200px;
-	min-height: 76px;
-	margin: 0 auto;
-	padding: 0 32px;
+	min-height: 68px;
+	padding: 0 25px;
 }
 
 .brand {
 	display: inline-flex;
 	align-items: center;
-	gap: 11px;
-	color: #302b34;
+	gap: 10px;
+	color: var(--color-ink);
 	text-decoration: none;
 }
 
 .brand-mark {
-	position: relative;
 	display: grid;
-	width: 38px;
-	height: 38px;
+	width: 37px;
+	height: 37px;
 	place-items: center;
-	border-radius: 11px;
-	background: #df4357;
+	border-radius: 12px;
+	background: var(--color-accent-dark);
 	color: #fff;
-	font-family: "Trebuchet MS", sans-serif;
-	font-size: 25px;
-	font-weight: 800;
+	font-family: "Momo Trust Display", sans-serif;
+	font-size: 24px;
 	line-height: 1;
 }
 
-.brand-mark::after {
-	position: absolute;
-	top: -3px;
-	right: -3px;
-	width: 9px;
-	height: 9px;
-	border: 2px solid #fff;
-	border-radius: 50%;
-	background: #7545a3;
-	content: "";
-}
-
 .brand-name {
-	font-family: "Trebuchet MS", sans-serif;
-	font-size: 21px;
+	font-family: "Momo Trust Display", sans-serif;
+	font-size: 20px;
 	font-weight: 800;
+	letter-spacing: -0.04em;
 }
 
 .brand-name span {
-	color: #7545a3;
+	color: var(--color-accent-dark);
 }
 
 .main-nav {
-	position: absolute;
-	top: 50%;
-	left: 50%;
 	display: flex;
-	transform: translate(-50%, -50%);
 }
 
 .nav-link {
 	display: inline-flex;
 	align-items: center;
-	min-height: 42px;
-	padding: 0 17px;
-	border: 3px solid #eadfed;
+	min-height: 40px;
+	padding: 0 15px;
+	border: 1px solid transparent;
 	border-radius: 999px;
-	background: #E09292;
-	color: #693c91;
-	font-size: 15px;
+	color: var(--color-muted);
+	font-size: 0.78rem;
+	letter-spacing: 0.08em;
 	text-decoration: none;
-	transition: background 160ms ease, border-color 160ms ease, color 160ms ease;
+	transition: background 160ms ease, color 160ms ease;
 	font-family: "Momo Trust Display", sans-serif;
+	font-weight: 500;
 }
 
 .nav-link.is-active {
-	border-color: #A1232D;
-	background: #ffa9a9;
-	color: #A1232D;
+	background: var(--color-accent-soft);
+	color: var(--color-accent-dark);
 }
 
 .nav-link:hover {
-	border-color: #d8bce7;
-	background: #f2e8f7;
+	background: #f7f0ef;
+	color: var(--color-ink);
 }
 
 .brand:focus-visible,
 .nav-link:focus-visible {
-	border-radius: 999px;
-	outline: 2px solid #7545a3;
-	outline-offset: 4px;
+	outline: 3px solid #c99196;
+	outline-offset: 3px;
 }
 
-@media (max-width: 520px) {
+@media (max-width: 640px) {
+	:host {
+		padding: 12px 14px 0;
+	}
+
 	.header-inner {
-		min-height: 68px;
-		padding: 0 18px;
+		min-height: 60px;
+		padding: 0 15px;
 	}
 
 	.brand {
-		gap: 9px;
+		gap: 8px;
 	}
 
 	.brand-mark {
@@ -122,19 +108,27 @@
 	}
 
 	.brand-name {
-		font-size: 19px;
+		font-size: 18px;
 	}
 
 	.nav-link {
-		min-height: 40px;
-		padding: 0 13px;
-		font-size: 14px;
+		min-height: 36px;
+		padding: 0 11px;
+		font-size: 0.7rem;
 	}
 }
 
 
 @media (max-width: 380px) {
 	.brand-name {
-		display: none;
+		font-size: 16px;
+	}
+
+	.header-inner {
+		padding: 0 11px;
+	}
+
+	.nav-link {
+		padding: 0 9px;
 	}
 }
