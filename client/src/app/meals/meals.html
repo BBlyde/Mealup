@@ -1,66 +1,84 @@
 <main class="meals-page">
     <section class="page-intro" aria-labelledby="page-title">
-        <h1 id="page-title">Mes repas</h1>
+        <h1 id="page-title">MEALS</h1>
+
+        <button class="add-meal-button" type="button" (click)="isModalOpen.set(true)">
+            <i class="fa-solid fa-circle-plus"></i>Ajouter un meal
+        </button>
     </section>
 
-    <section class="form-panel" aria-labelledby="form-title">
-        <div class="section-heading">
-            <div>
-                <h2 id="form-title">Un nouveau repas</h2>
-            </div>
-            <span class="form-panel__icon" aria-hidden="true">＋</span>
-        </div>
 
-        <form class="meal-form" (submit)="addMeal($event)">
-            <div class="form-field">
-                <label for="mealName">Nom du repas</label>
-                <input type="text" id="mealName" placeholder="Ex. Gratin de légumes" [formField]="mealForm.name" />
-            </div>
+    @if (isModalOpen()) {
+    <div class="modal-backdrop" (click)="isModalOpen.set(false)">
+        <section class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title"
+            (click)="$event.stopPropagation()">
 
-            <div class="form-field">
-                <label for="mealType">Catégorie</label>
-                <select id="mealType" [formField]="mealForm.type">
-                    <option value="" disabled>Choisir une catégorie</option>
-                    <option id="starter">Entrée</option>
-                    <option id="main">Repas principal</option>
-                    <option id="dessert">Dessert</option>
-                </select>
-            </div>
 
-            <div class="form-field form-field--wide">
-                <label for="mealIngredients">Ingrédients</label>
-                <input type="text" id="mealIngredients" placeholder="Ex. courgettes, crème, fromage…" [formField]="mealForm.ingredients" />
-            </div>
-
-            <div class="form-field form-field--wide">
-                <label for="mealRecipe">Recette</label>
-                <input type="text" id="mealRecipe" placeholder="Quelques mots sur la préparation" [formField]="mealForm.recipe" />
-            </div>
-
-            <div class="form-field">
-                <label for="mealPreparationTime">Préparation <span>(min)</span></label>
-                <input type="number" id="mealPreparationTime" placeholder="20" [formField]="mealForm.preparation" />
-            </div>
-
-            <div class="form-field">
-                <label for="mealCookingTime">Cuisson <span>(min)</span></label>
-                <input type="number" id="mealCookingTime" placeholder="30" [formField]="mealForm.cooking" />
-            </div>
-
-            <div class="form-actions">
-                <button type="submit" [disabled]="isSaving()">
-                    {{ isSaving() ? 'Enregistrement…' : 'Ajouter le repas' }}
-                    @if (!isSaving()) {
-                    <span aria-hidden="true">→</span>
-                    }
+            <div class="section-heading">
+                <div>
+                    <h2 id="form-title">NOUVEAU MEAL</h2>
+                </div>
+                
+                <button class="modal-close-button" type="button" aria-label="Fermer la fenêtre"
+                    (click)="isModalOpen.set(false)">
+                    <i class="fa-regular fa-circle-xmark"></i>
                 </button>
             </div>
 
-            @if (saveError()) {
-            <p class="form-error" role="alert">{{ saveError() }}</p>
-            }
-        </form>
-    </section>
+            <form class="meal-form" (submit)="addMeal($event)">
+                <div class="form-field">
+                    <label for="mealName">Nom du repas</label>
+                    <input type="text" id="mealName" placeholder="Ex. Gratin de légumes" [formField]="mealForm.name" />
+                </div>
+
+                <div class="form-field">
+                    <label for="mealType">Catégorie</label>
+                    <select id="mealType" [formField]="mealForm.type">
+                        <option value="" disabled>Choisir une catégorie</option>
+                        <option id="starter">Entrée</option>
+                        <option id="main">Repas principal</option>
+                        <option id="dessert">Dessert</option>
+                    </select>
+                </div>
+
+                <div class="form-field form-field--wide">
+                    <label for="mealIngredients">Ingrédients</label>
+                    <input type="text" id="mealIngredients" placeholder="Ex. courgettes, crème, fromage…"
+                        [formField]="mealForm.ingredients" />
+                </div>
+
+                <div class="form-field form-field--wide">
+                    <label for="mealRecipe">Recette</label>
+                    <input type="text" id="mealRecipe" placeholder="Quelques mots sur la préparation"
+                        [formField]="mealForm.recipe" />
+                </div>
+
+                <div class="form-field">
+                    <label for="mealPreparationTime">Préparation <span>(min)</span></label>
+                    <input type="number" id="mealPreparationTime" placeholder="20" [formField]="mealForm.preparation" />
+                </div>
+
+                <div class="form-field">
+                    <label for="mealCookingTime">Cuisson <span>(min)</span></label>
+                    <input type="number" id="mealCookingTime" placeholder="30" [formField]="mealForm.cooking" />
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" [disabled]="isSaving()">
+                        {{ isSaving() ? 'Enregistrement…' : 'Ajouter le repas' }}
+                        @if (!isSaving()) {
+                        <span aria-hidden="true">→</span>
+                        }
+                    </button>
+                </div>
+
+                @if (saveError()) {
+                <p class="form-error" role="alert">{{ saveError() }}</p>
+                }
+            </form>
+        </section>
+    </div>
+    }
 
     <section class="meal-section" aria-labelledby="meals-title">
         <div class="section-heading meal-section__heading">
@@ -100,8 +118,10 @@
                     </div>
                 </div>
                 <div class="meal-card__times">
-                    <span class="meal-time"><span aria-hidden="true">◷</span> Préparation <strong>{{ meal.preparation }} min</strong></span>
-                    <span class="meal-time"><span aria-hidden="true">♨</span> Cuisson <strong>{{ meal.cooking }} min</strong></span>
+                    <span class="meal-time"><span aria-hidden="true">◷</span> Préparation <strong>{{ meal.preparation }}
+                            min</strong></span>
+                    <span class="meal-time"><span aria-hidden="true">♨</span> Cuisson <strong>{{ meal.cooking }}
+                            min</strong></span>
                 </div>
             </article>
             }

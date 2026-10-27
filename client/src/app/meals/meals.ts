@@ -35,6 +35,9 @@ export class Meals implements OnInit {
     /** The list of meals retrieved from the API. */
     readonly meals = signal<Meal[]>([]);
 
+    /** Indicates whether the modal for adding a new meal is open. */
+    readonly isModalOpen = signal(false);
+
     /**
      * Initializes the component by fetching the list of meals from the API.
      */
